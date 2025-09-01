@@ -1,6 +1,8 @@
+use crate::slideshow_client::SlideshowClient;
 use makepad_widgets::*;
 use moly_kit::{
-    ChatWidgetRefExt, OpenAIClient, protocol::*, utils::asynchronous::spawn,
+    ChatTask, ChatWidgetRefExt, OpenAIClient, protocol::*,
+    utils::asynchronous::spawn,
 };
 use std::path::{Path, PathBuf};
 
@@ -132,6 +134,18 @@ live_design! {
                 border_radius: 0.0,
                 color: #fff
             }
+            prompt = {
+                persistent = {
+                    center = {
+                        left = {
+                            visible: false
+                        }
+                        text_input = {
+                            empty_text: "Ask about this image..."
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -161,6 +175,8 @@ pub struct App {
     ui: WidgetRef,
     #[rust]
     state: State,
+    #[rust]
+    slideshow_client: Option<SlideshowClient>,
 }
 
 impl App {
@@ -233,6 +249,7 @@ impl App {
 
     fn configure_slideshow_chat(&mut self, cx: &mut Cx) {
         self.configure_slideshow_chat_context(cx);
+        self.configure_slideshow_chat_before_hook(cx);
     }
 
     fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
@@ -240,6 +257,9 @@ impl App {
         let key = std::env::var("API_KEY").unwrap_or_default();
         let mut client = OpenAIClient::new(url);
         client.set_key(&key).unwrap();
+
+        let client = SlideshowClient::from(client);
+        self.slideshow_client = Some(client.clone());
 
         let mut bot_context = BotContext::from(client);
 
@@ -278,6 +298,62 @@ impl App {
         });
     }
 
+    fn configure_slideshow_chat_before_hook(&mut self, _cx: &mut Cx) {
+        let ui = self.ui_runner();
+        let mut chat = self.ui.chat(id!(slideshow.chat));
+        chat.write().set_hook_before(move |task_group, _chat, _cx| {
+            let before_len = task_group.len();
+            task_group.retain(|task| *task != ChatTask::Send);
+            if task_group.len() != before_len {
+                ui.defer(move |me, cx, _scope| {
+                    me.perform_chat_send(cx);
+                });
+            }
+        });
+    }
+
+    fn perform_chat_send(&mut self, cx: &mut Cx) {
+        let Some(current_image_idx) = self.state.current_image_idx else {
+            return;
+        };
+
+        let Some(client) = self.slideshow_client.as_mut() else {
+            return;
+        };
+
+        let path = self.state.image_paths[current_image_idx].as_path();
+        let extension = path.extension().and_then(|e| e.to_str());
+
+        let mime = extension.map(|e| match e {
+            "jpg" | "jpeg" => "image/jpeg".to_string(),
+            "png" => "image/png".to_string(),
+            e => format!("image/{e}"),
+        });
+
+        let filename = path
+            .file_name()
+            .and_then(|f| f.to_str())
+            .unwrap_or_default();
+
+        let mut chat = self.ui.chat(id!(slideshow.chat));
+
+        match std::fs::read(path) {
+            Ok(bytes) => {
+                let attachment =
+                    Attachment::from_bytes(filename.to_string(), mime, &bytes);
+                client.set_attachment(Some(attachment));
+                chat.write().perform(cx, &[ChatTask::Send]);
+            }
+            Err(e) => {
+                chat.read()
+                    .messages_ref()
+                    .write()
+                    .messages
+                    .push(Message::app_error(e));
+            }
+        }
+    }
+
     fn clear_chat_messages(&self) {
         self.ui
             .chat(id!(slideshow.chat))
@@ -301,7 +377,7 @@ impl AppMain for App {
 
 impl LiveHook for App {
     fn after_new_from_doc(&mut self, cx: &mut Cx) {
-        self.load_image_paths(cx, "images".as_ref());
+        self.load_image_paths(cx, "../../../images".as_ref());
         self.configure_slideshow_chat(cx);
     }
 }

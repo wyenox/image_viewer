@@ -1,5 +1,5 @@
 [package]
-name = "image-viewer-moly-image-query"
+name = "image_viewer"
 version = "0.1.0"
 edition = "2024"
 

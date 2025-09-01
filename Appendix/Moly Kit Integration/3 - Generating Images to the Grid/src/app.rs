@@ -529,7 +529,7 @@ impl AppMain for App {
 
 impl LiveHook for App {
     fn after_new_from_doc(&mut self, cx: &mut Cx) {
-        self.load_image_paths(cx, "images".as_ref());
+        self.load_image_paths(cx, "../../../images".as_ref());
         self.configure_slideshow_chat(cx);
         self.configure_image_browser_chat(cx);
     }
