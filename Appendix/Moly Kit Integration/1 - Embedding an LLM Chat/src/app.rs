@@ -1,8 +1,12 @@
 use makepad_widgets::*;
+use moly_kit::{
+    ChatWidgetRefExt, OpenAIClient, protocol::*, utils::asynchronous::spawn,
+};
 use std::path::{Path, PathBuf};
 
 live_design! {
     use link::widgets::*;
+    use moly_kit::widgets::chat::Chat;
 
     LEFT_ARROW = dep("crate://self/resources/left_arrow.svg");
     RIGHT_ARROW = dep("crate://self/resources/right_arrow.svg");
@@ -143,15 +147,28 @@ live_design! {
     }
 
     Slideshow = <View> {
-        flow: Overlay,
+        <View> {
+            flow: Overlay,
 
-        image = <Image> {
-            width: Fill,
-            height: Fill,
-            fit: Biggest,
-            source: (PLACEHOLDER)
+            image = <Image> {
+                width: Fill,
+                height: Fill,
+                fit: Biggest,
+                source: (PLACEHOLDER)
+            }
+
+            overlay = <SlideshowOverlay> {}
         }
-        overlay = <SlideshowOverlay> {}
+
+        chat = <Chat> {
+            padding: 10,
+            width: 300,
+            visible: false,
+            draw_bg: {
+                border_radius: 0.0,
+                color: #fff
+            }
+        }
     }
 
     App = {{App}} {
@@ -206,6 +223,8 @@ impl App {
             image.load_image_dep_by_path(cx, placeholder).unwrap();
         }
 
+        self.clear_slideshow_chat_messages();
+
         self.ui.redraw(cx);
     }
 
@@ -220,22 +239,83 @@ impl App {
             self.set_current_image(cx, self.state.current_image_idx + 1);
         }
     }
+
+    fn configure_slideshow_chat(&mut self, cx: &mut Cx) {
+        self.configure_slideshow_chat_context(cx);
+    }
+
+    fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
+        let url = std::env::var("API_URL").unwrap_or_default();
+        let key = std::env::var("API_KEY").unwrap_or_default();
+        let mut client = OpenAIClient::new(url);
+        client.set_key(&key).unwrap();
+
+        let mut bot_context = BotContext::from(client);
+
+        let mut chat = self.ui.chat(id!(slideshow.chat));
+        chat.write().set_bot_context(cx, Some(bot_context.clone()));
+
+        let ui = self.ui_runner();
+        spawn(async move {
+            let errors = bot_context.load().await.into_errors();
+
+            ui.defer(move |me, cx, _scope| {
+                let mut chat = me.ui.chat(id!(slideshow.chat));
+                let mut messages = chat.read().messages_ref();
+
+                for error in errors {
+                    messages.write().messages.push(Message::app_error(error));
+                }
+
+                let model_id = std::env::var("MODEL_ID").unwrap_or_default();
+                let bot = bot_context
+                    .bots()
+                    .into_iter()
+                    .find(|b| b.id.id() == model_id);
+
+                if let Some(bot) = bot {
+                    chat.write().set_bot_id(cx, Some(bot.id));
+                } else {
+                    messages.write().messages.push(Message::app_error(
+                        format!("Model ID '{}' not found", model_id),
+                    ));
+                }
+
+                chat.write().visible = true;
+                me.ui.redraw(cx);
+            });
+        });
+    }
+
+    fn clear_slideshow_chat_messages(&self) {
+        self.ui
+            .chat(id!(slideshow.chat))
+            .read()
+            .messages_ref()
+            .write()
+            .messages
+            .clear();
+    }
 }
 
 impl LiveRegister for App {
     fn live_register(cx: &mut Cx) {
         makepad_widgets::live_design(cx);
+        moly_kit::live_design(cx);
     }
 }
 
 impl LiveHook for App {
     fn after_new_from_doc(&mut self, cx: &mut Cx) {
         self.load_image_paths(cx, "../../../images".as_ref());
+        self.configure_slideshow_chat(cx);
     }
 }
 
 impl AppMain for App {
     fn handle_event(&mut self, cx: &mut Cx, event: &Event) {
+        self.ui_runner()
+            .handle(cx, event, &mut Scope::empty(), self);
         self.match_event(cx, event);
         let mut scope = Scope::with_data(&mut self.state);
         self.ui.handle_event(cx, event, &mut scope);
@@ -247,6 +327,7 @@ impl MatchEvent for App {
         let page_flip = self.ui.page_flip(id!(page_flip));
 
         if self.ui.button(id!(button)).clicked(&actions) {
+            self.clear_slideshow_chat_messages();
             page_flip.set_active_page(cx, live_id!(slideshow));
         }
 

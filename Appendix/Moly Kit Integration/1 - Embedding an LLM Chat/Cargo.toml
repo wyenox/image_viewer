@@ -4,4 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-makepad-widgets = "1.0.0"
+makepad-widgets = { git = "https://github.com/wyeworks/makepad", branch = "moly" }
+moly-kit = { git = "https://github.com/moxin-org/moly.git", features = ["full"], branch = "main" }
