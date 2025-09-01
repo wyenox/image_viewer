@@ -1,11 +1,13 @@
 use makepad_widgets::*;
 use moly_kit::{
-    ChatTask, ChatWidgetRefExt, OpenAIClient, protocol::*,
+    ChatTask, ChatWidgetRefExt, OpenAIClient, OpenAIImageClient, protocol::*,
     utils::asynchronous::spawn,
 };
 use std::path::{Path, PathBuf};
 
 use crate::slideshow_client::SlideshowClient;
+
+const IMAGES_PATH: &str = "../../../images";
 
 live_design! {
     use link::widgets::*;
@@ -117,6 +119,25 @@ live_design! {
 
         menu_bar = <MenuBar> {}
         image_grid = <ImageGrid> {}
+        chat = <Chat> {
+            height: Fit,
+            padding: 10,
+            messages = {
+                visible: false
+            }
+            prompt = {
+                persistent = {
+                    center = {
+                        left = {
+                            visible: false
+                        }
+                        text_input = {
+                            empty_text: "Describe an image to generate..."
+                        }
+                    }
+                }
+            }
+        }
     }
 
     SlideshowButton = <Button> {
@@ -370,6 +391,136 @@ impl App {
             .messages
             .clear();
     }
+
+    fn configure_image_browser_chat(&mut self, cx: &mut Cx) {
+        self.configure_image_browser_chat_context(cx);
+        self.configure_image_browser_chat_before_hook(cx);
+    }
+
+    fn configure_image_browser_chat_context(&self, cx: &mut Cx) {
+        let url = std::env::var("API_URL").unwrap_or_default();
+        let key = std::env::var("API_KEY").unwrap_or_default();
+
+        let mut client = OpenAIImageClient::new(url);
+        client.set_key(&key).unwrap();
+
+        let mut bot_context = BotContext::from(client);
+
+        let mut chat = self.ui.chat(id!(image_browser.chat));
+        chat.write().set_bot_context(cx, Some(bot_context.clone()));
+
+        let ui = self.ui_runner();
+        spawn(async move {
+            let errors = bot_context.load().await.into_errors();
+
+            for error in errors {
+                eprintln!("Error: {error}");
+            }
+
+            ui.defer(move |me, cx, _scope| {
+                let mut chat = me.ui.chat(id!(image_browser.chat));
+
+                let model_id =
+                    std::env::var("IMAGE_MODEL_ID").unwrap_or_default();
+
+                let bot = bot_context
+                    .bots()
+                    .into_iter()
+                    .find(|b| b.id.id() == model_id);
+
+                if let Some(bot) = bot {
+                    chat.write().set_bot_id(cx, Some(bot.id));
+                } else {
+                    eprintln!("Error: Image Model ID '{}' not found", model_id);
+                }
+
+                chat.write().visible = true;
+                me.ui.redraw(cx);
+            });
+        });
+    }
+
+    fn configure_image_browser_chat_before_hook(&mut self, _cx: &mut Cx) {
+        let ui = self.ui_runner();
+        self.ui
+            .chat(id!(image_browser.chat))
+            .write()
+            .set_hook_before(move |task_group, chat, cx| {
+                let aborted_tasks = std::mem::take(task_group);
+                for task in aborted_tasks {
+                    match task {
+                        ChatTask::Send => {
+                            chat.perform(cx, &[ChatTask::Send]);
+                        }
+                        ChatTask::ClearPrompt => {
+                            chat.perform(cx, &[ChatTask::ClearPrompt]);
+                        }
+                        ChatTask::InsertMessage(_, message) => {
+                            match &message.from {
+                                EntityId::User => {
+                                    chat.perform(
+                                        cx,
+                                        &[ChatTask::InsertMessage(0, message)],
+                                    );
+                                }
+                                EntityId::Bot(_) => {
+                                    chat.perform(
+                                        cx,
+                                        &[ChatTask::InsertMessage(1, message)],
+                                    );
+                                }
+                                _ => {}
+                            }
+                        }
+                        ChatTask::UpdateMessage(_, message) => {
+                            if !message.metadata.is_writing {
+                                continue;
+                            }
+
+                            let attachment = message
+                                .content
+                                .attachments
+                                .first()
+                                .cloned();
+
+                            let Some(attachment) = attachment else {
+                                return;
+                            };
+
+                            spawn(async move {
+                                match attachment.read().await {
+                                    Ok(bytes) => {
+                                        let now = std::time::SystemTime::now().duration_since(
+                                            std::time::UNIX_EPOCH,
+                                        ).unwrap().as_secs();
+
+                                        let filename = format!("generated_image_{now}.png");
+                                        let path = Path::new(IMAGES_PATH).join(&filename);
+
+                                        println!("Saving generated image to {path:?}");
+
+                                        if let Err(e) = std::fs::write(&path, &bytes) {
+                                            eprintln!("Error saving generated image to {path:?}: {e}");
+                                        }
+
+                                        ui.defer(move |me, cx, _scope| {
+                                            me.state.image_paths.push(path);
+                                            me.ui.redraw(cx);
+                                        });
+                                    },
+                                    Err(e) => {
+                                        eprintln!("Error reading image generation: {e}");
+                                    }
+                                }
+                            });
+
+                            chat.messages_ref().write().messages.clear();
+                        }
+                        _ => {}
+                    }
+                }
+            });
+    }
 }
 
 impl LiveRegister for App {
@@ -381,8 +532,9 @@ impl LiveRegister for App {
 
 impl LiveHook for App {
     fn after_new_from_doc(&mut self, cx: &mut Cx) {
-        self.load_image_paths(cx, "../../../images".as_ref());
+        self.load_image_paths(cx, IMAGES_PATH.as_ref());
         self.configure_slideshow_chat(cx);
+        self.configure_image_browser_chat(cx);
     }
 }
 
@@ -494,9 +646,9 @@ impl Widget for ImageGridRow {
                     let first_image_idx = state.first_image_for_row(row_idx);
                     let image_idx = first_image_idx + item_idx;
                     let image_path = &state.image_paths[image_idx];
-                    image
-                        .load_image_file_by_path_async(cx, &image_path)
-                        .unwrap();
+                    // Seems like the `async` version of this is broken for png files,
+                    // like the ones generated by AI. So switching to sync version for now.
+                    image.load_image_file_by_path(cx, &image_path).unwrap();
 
                     item.draw_all(cx, &mut Scope::empty());
                 }
