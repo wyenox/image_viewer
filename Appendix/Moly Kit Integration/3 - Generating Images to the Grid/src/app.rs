@@ -141,6 +141,7 @@ live_design! {
     }
 
     SlideshowButton = <Button> {
+        text: "",
         width: 50,
         height: Fill,
         draw_bg: {
