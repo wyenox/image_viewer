@@ -2,11 +2,11 @@
 
 ## Introduction
 
-In this step will look at how to add and configure an LLM chat into our image
+In this step we will look at how to add and configure an LLM chat into our image
 viewer slideshow.
 
 At the end of this step, the chat will be fully functional but lack integration
-with the current image being displayed, as we will explore that on next parts
+with the current image being displayed, as we will explore that in the next parts
 of the tutorial.
 
 ## Screenshots
@@ -17,11 +17,11 @@ of the tutorial.
 
 ### Overview
 
-To accomplish this, we will simply follow [Moly Kit's recepie](https://moxin-org.github.io/moly/basics.html).
+To accomplish this, we will simply follow [Moly Kit's recipe](https://moxin-org.github.io/moly/basics.html).
 
-This can be breaked into 3 parts:
+This can be broken into 3 parts:
 
-1. Add Moly Kit dependency andu se a compatible Makepad version.
+1. Add Moly Kit dependency and use a compatible Makepad version.
 2. Register Moly Kit widgets the Makepad way.
 3. Create a `BotContext` and give it to the `Chat` widget (we will
 explain this later).
@@ -38,14 +38,14 @@ makepad-widgets = { git = "https://github.com/wyeworks/makepad", branch = "moly"
 moly-kit = { git = "https://github.com/moxin-org/moly.git", features = ["full"], branch = "main" }
 ```
 
-We include Moly Kit from GitHub as it's not on crate.io yet. The `full` feature
-flag will gives the easiest setup possible. 
+We include Moly Kit from GitHub as it's not on crates.io yet. The `full` feature
+flag gives the easiest setup possible. 
 
 We will need to use a patched version of Makepad as well. This is because
-currently Moly Kit focus is to be used inside Moly, an LLM app that moves fast
+currently Moly Kit's focus is to be used inside Moly, an LLM app that moves fast
 and usually requires specific Makepad patches to keep working.
 
-This requirements will disappear once Moly Kit is moved to it's own repo with a
+These requirements will disappear once Moly Kit is moved to its own repo with a
 more stable branch, but for now we will work with these dependencies for this
 tutorial.
 
@@ -95,7 +95,7 @@ Slideshow = <View> {
     chat = <Chat> {
         padding: 10,
         width: 300,
-        // We hide the chat by default. We will make it programatically visible
+        // We hide the chat by default. We will make it programmatically visible
         // once models are ready inside the `BotContext` (next step).
         visible: false,
         draw_bg: {
@@ -118,25 +118,25 @@ compatible endpoint, the following steps should be done:
 2. Configure the client with the proper API key.
 3. Generate a `BotContext` from our single client.
 4. Set this `BotContext` as the one to be used in `Chat`.
-5. Spawn an async task to boostrap (load) the `BotContext`.
+5. Spawn an async task to bootstrap (load) the `BotContext`.
 
-As you may expect, `OpenAIClient` is what defines how to hit OpenAIs
+As you may expect, `OpenAIClient` is what defines how to hit OpenAI's
 conversational endpoint. But what is `BotContext` and why do we need to
-"load" it asynchronusly? 
+"load" it asynchronously? 
 
 In Moly Kit terms, a "Bot" is anything automated we can talk to. Like pure LLM
 models or agentic workflows. A `BotContext` is basically a synchronous
 container, with models preloaded, that is passed down the widget tree of `Chat`
-so all widget have syncrhonous access to the list of available models. It's
+so all widgets have synchronous access to the list of available models. It's
 a key part of integrating the asynchronous, streaming, Moly Kit clients with
-the syncrhonous Makepad widgets.
+the synchronous Makepad widgets.
 
 Currently, `Chat` doesn't handle bots loading automatically, so we need to
-trigger and wait the load outselves before displaying it. There are future plans
-to eliminate the need of this for simple cases like ours, but it's currently not
+trigger and wait for the load ourselves before displaying it. There are future plans
+to eliminate the need for this for simple cases like ours, but it's currently not
 the case.
 
-Okey, so let's start writing the code.
+Okay, so let's start writing the code.
 
 You will want to prepare the following aliases:
 
@@ -146,7 +146,7 @@ use moly_kit::{
 };
 ```
 
-- `moly_kit::protocol::*` it's an important one, as it contains the base types
+- `moly_kit::protocol::*` is an important one, as it contains the base types
 and traits to work with Moly Kit.
 - `moly_kit::OpenAIClient` is the client implementation we will use to talk to
 an OpenAI compatible endpoint.
@@ -156,9 +156,9 @@ when loading the `BotContext`.
 our `Chat` widget we defined in the DSL.
 
 Now, we will also use Makepad's `UiRunner` as a concise and pragmatic alternative
-to raw `Cx::post_action` usage. An `UiRunner` allows us to send boxed closures
+to raw `Cx::post_action` usage. A `UiRunner` allows us to send boxed closures
 from any thread or async task, back to our app/widget scope for execution. The
-only requirement to enable it's usage is to add the following line to
+only requirement to enable its usage is to add the following line to
 your `handle_event`.
 
 ```rust
@@ -180,7 +180,7 @@ what each part does inline with the code:
 
 ```rust
 fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
-    // Get the api url and api key from enviroment variables.
+    // Get the api url and api key from environment variables.
     // Feel free to hard code them if you want.
     let url = std::env::var("API_URL").unwrap_or_default();
     let key = std::env::var("API_KEY").unwrap_or_default();
@@ -197,13 +197,13 @@ fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
     chat.write().set_bot_context(cx, Some(bot_context.clone()));
 
     // Obtain a `UiRunner` instance (which is `Copy`), so we can execute things
-    // in the scope of our app from any thread or async task easly.
+    // in the scope of our app from any thread or async task easily.
     let ui = self.ui_runner();
 
     // Use Moly Kit cross platform, Tokio enabled, web compatible, `spawn`
-    // function to run our `BotContext` bootstraping code.
+    // function to run our `BotContext` bootstrapping code.
     spawn(async move {
-        // Load the `BotContext` asyncrhonously and turn it's result into a
+        // Load the `BotContext` asynchronously and turn its result into a
         // vector of errors so we can report them if any.
         let errors = bot_context.load().await.into_errors();
 
@@ -214,11 +214,11 @@ fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
             let mut chat = me.ui.chat(id!(slideshow.chat));
 
             // We also get a reference to the internal `Messages` widget which
-            // is a child of `Chat` responsabile of holding the messages vector
+            // is a child of `Chat` responsible for holding the messages vector
             // and displaying it.
             let mut messages = chat.read().messages_ref();
 
-            // We insert "error messages" into out chat to report problems that
+            // We insert "error messages" into our chat to report problems that
             // happened during load.
             //
             // Note: You could also just "print" them, but having errors in our
@@ -228,7 +228,7 @@ fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
             }
 
             // We search for a `Bot`, whose raw provider-side id is the one we
-            // specified in our enviroment variable.
+            // specified in our environment variable.
             //
             // Note: A `BotId` is composed of more information, but for this
             // tutorial, we only care about the id as it's defined in our
@@ -272,7 +272,7 @@ fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
 > - Moly Kit developers don't have to replicate methods, doing `.clone()`s or
 > `RefMut::map` hacks internally.
 > - You will never experience an accidental method being defined on a ref, but
-> not in it's inner widget.
+> not in its inner widget.
 > - You will never hit the inconsistency of having methods that are exposed in
 > the ref version, while others require you to do `.borrow_mut().unwrap()`.
 
@@ -299,7 +299,7 @@ fn configure_slideshow_chat(&mut self, cx: &mut Cx) {
 
 ### 4. Nice UI extras.
 
-Would be nice if we can clear the message list every time the image in the
+It would be nice if we can clear the message list every time the image in the
 slideshow changes and when the slideshow itself is opened.
 
 Let's define the following utility function:
@@ -339,11 +339,11 @@ fn set_current_image(&mut self, cx: &mut Cx, image_idx: usize) {
 
 ## What we did
 
-Now, if you run your app and go the the slideshow, you will have the chat we
-embeded, and it will be working (independently of our app).
+Now, if you run your app and go to the slideshow, you will have the chat we
+embedded, and it will be working (independently of our app).
 
 ## What's Next
 
-We will hook into our `Chat`'s pipeline to inject current image being viewed in
-the slideshow as additional context. This way we will be abale to ask things
+We will hook into our `Chat`'s pipeline to inject the current image being viewed in
+the slideshow as additional context. This way we will be able to ask things
 about our image.
