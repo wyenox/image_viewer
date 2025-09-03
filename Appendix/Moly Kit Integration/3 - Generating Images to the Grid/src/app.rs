@@ -122,6 +122,7 @@ live_design! {
         chat = <Chat> {
             height: Fit,
             padding: 10,
+            visible: false,
             messages = {
                 visible: false
             }
