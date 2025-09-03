@@ -2,13 +2,13 @@
 
 ## Introduction
 
-In this additional lesson, we will simply use what we already learnt from
+In this additional lesson, we will simply use what we already learned from
 the previous Moly Kit lessons. It's assumed you already know how to configure
 the `BotContext` required by a `Chat` and what a "chat hook" is. We will go fast
-to reach our goal, but the principels are the same as previous lessons.
+to reach our goal, but the principles are the same as previous lessons.
 
-For this lesson, what we wil do is, add a new "chat" to the image grid, with the
-purpose of generating new images in runtime!
+For this lesson, what we will do is add a new "chat" to the image grid, with the
+purpose of generating new images at runtime!
 
 ## Screenshots
 
@@ -19,10 +19,10 @@ purpose of generating new images in runtime!
 
 ### Overview
 
-Knowing what we already know, we can achieve this following this receipie.
+Knowing what we already know, we can achieve this following this recipe.
 
-1. Put a new chat in the DSL so it appears at the botton of the image grid. We
-will override it's DSL to hide the messages list as it will not be used, leaving
+1. Put a new chat in the DSL so it appears at the bottom of the image grid. We
+will override its DSL to hide the messages list as it will not be used, leaving
 only the prompt input visible.
 2. Configure the `BotContext` for this chat using the `OpenAIImageClient` as
 the base. This client can talk to models like `dalle-3` or `gpt-image-1` to
@@ -32,17 +32,17 @@ control of what happens when something happens in the `Chat`.
 
 > [!tip]
 >
-> Although, these lessons focuses on integrating the `Chat` widget, you may find
-> cleanner to make your own UI to avoid the needs of hooking. If you prefer to
-> do so, you can still levreage a lot of the pure Moly Kit abstractions, like
+> Although these lessons focus on integrating the `Chat` widget, you may find
+> it cleaner to make your own UI to avoid the needs of hooking. If you prefer to
+> do so, you can still leverage a lot of the pure Moly Kit abstractions, like
 > the built-in implemented clients, attachments abstractions, async utilities,
 > etc. This way, you will not need to deal with SSE, handling JSON format
-> inconsistencies, fight some web compatibility issues, etc that are already
+> inconsistencies, fight some web compatibility issues, etc. that are already
 > solved by these built-in implementations. 
 
 ### 1. Adding a new chat
 
-Update the DSL t include the chat below the image grid, inside the image
+Update the DSL to include the chat below the image grid, inside the image
 browser.
 
 ```rust
@@ -69,7 +69,7 @@ ImageBrowser = <View> {
                     left = {
                         // Optionally, as in lesson 2, remove the "attach file"
                         // button from the left side of the prompt input to
-                        // achieve a cleanner UI, although, it may actually be
+                        // achieve a cleaner UI, although it may actually be
                         // useful to produce images from references if you don't
                         // want to hide it.
                         visible: false
@@ -92,7 +92,7 @@ image generation client:
 ```rust
 impl LiveHook for App {
     fn after_new_from_doc(&mut self, cx: &mut Cx) {
-        // ... other initialization calls ...
+        // ...other initialization calls...
 
         self.configure_image_browser_chat(cx);
     }
@@ -159,18 +159,18 @@ fn configure_image_browser_chat_context(&self, cx: &mut Cx) {
 3. The hook
 
 We will use a hook as before, to detect the response from the image generation
-model, which should come with an `Attachment`, to save it our filesystem and add
+model, which should come with an `Attachment`, to save it to our filesystem and add
 it to our grid.
 
 Hooks are very flexible, and the approach we will take here is slightly
-to the ones in the previous lessons. Inside the hook, we will:
+different to the ones in the previous lessons. Inside the hook, we will:
 
-1. Clear the tasks vector, esentially, preventing implicit default behavior from
+1. Clear the tasks vector, essentially, preventing implicit default behavior from
 executing.
-2. Let some relevant tasks to pass-through by performing them manually.
+2. Let some relevant tasks pass-through by performing them manually.
 3. Hook into message insertions to always leave the chat with exactly 2
 messages, the user request, and the loading AI message.
-4. Hook into message updates, trying to identify the final task notifing us
+4. Hook into message updates, trying to identify the final task notifying us
 with the image generation.
 5. Write that image to disk, alongside other images of the grid.
 6. Add the image to the grid.
@@ -272,7 +272,7 @@ fn configure_image_browser_chat_before_hook(&mut self, _cx: &mut Cx) {
                                     // requests.
                                     let filename = format!("generated_image_{now}.png");
 
-                                    // Let's take the path where images where stored and
+                                    // Let's take the path where images were stored and
                                     // make the path for our file to write it.
                                     let path = Path::new(IMAGES_PATH).join(&filename);
 
@@ -308,16 +308,16 @@ fn configure_image_browser_chat_before_hook(&mut self, _cx: &mut Cx) {
 ```
 
 As you can see, even if it's a little trickier to do, `Chat` allows us to take
-the control as much as we need.
+control as much as we need.
 
 > [!tip]
 >
 > But if you don't like hooking, as I mentioned earlier, you can also just use
-> `OpenAIImageClient` directly with your own UI, just take wait for a single
+> `OpenAIImageClient` directly with your own UI, just wait for a single
 > message in the output stream of `send()` and it should contain your image (or
 > an error).
 
 ## What we did
 
-You should now be abale to generate images that will get added to the image
-grid, by levreaging what we already learnt in previous lessons.
+You should now be able to generate images that will get added to the image
+grid, by leveraging what we already learned in previous lessons.
