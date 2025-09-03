@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In the previous step we embedded Moly Kit's `Chat` widget into our slideshow
+In the previous lesson we embedded Moly Kit's `Chat` widget into our slideshow
 screen, which once configured, worked automatically to talk to LLM models.
 
 However, to make this a real integration, we would like to let the LLM model

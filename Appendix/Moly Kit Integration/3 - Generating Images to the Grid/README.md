@@ -38,7 +38,7 @@ control of what happens when something happens in the `Chat`.
 > the built-in implemented clients, attachments abstractions, async utilities,
 > etc. This way, you will not need to deal with SSE, handling JSON format
 > inconsistencies, fight some web compatibility issues, etc. that are already
-> solved by these built-in implementations. 
+> solved by these built-in implementations.
 
 ### 1. Adding a new chat
 
@@ -309,13 +309,6 @@ fn configure_image_browser_chat_before_hook(&mut self, _cx: &mut Cx) {
 
 As you can see, even if it's a little trickier to do, `Chat` allows us to take
 control as much as we need.
-
-> [!tip]
->
-> But if you don't like hooking, as I mentioned earlier, you can also just use
-> `OpenAIImageClient` directly with your own UI, just wait for a single
-> message in the output stream of `send()` and it should contain your image (or
-> an error).
 
 ## What we did
 

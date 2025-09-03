@@ -2,10 +2,10 @@
 
 ## Introduction
 
-In this step we will look at how to add and configure an LLM chat into our image
+In this lesson we will look at how to add and configure an LLM chat into our image
 viewer slideshow.
 
-At the end of this step, the chat will be fully functional but lack integration
+At the end of this lesson, the chat will be fully functional but lack integration
 with the current image being displayed, as we will explore that in the next parts
 of the tutorial.
 
@@ -277,7 +277,7 @@ fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
 > the ref version, while others require you to do `.borrow_mut().unwrap()`.
 
 We can now call our function in `after_new_from_doc` where we also initialized
-the images list in previous tutorial steps.
+the images list in previous tutorial lessons.
 
 ```rust
 fn after_new_from_doc(&mut self, cx: &mut Cx) {

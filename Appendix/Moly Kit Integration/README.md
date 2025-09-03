@@ -11,13 +11,13 @@ We will construct from the [last part of the base image viewer tutorial](https:/
 to progressively integrate a couple of LLM chats with capabilities to interact
 with our previous image viewer.
 
-We will break this guide into 3 big fully functional steps:
+We will break this lessons into 3 big fully functional parts:
 1. Embed a fully functional LLM chat inside the slideshow screen.
 2. Give the current image in the slideshow as context to that chat.
 3. Add a separate prompt input to the grid screen, with image generation
 capabilities.
 
-Steps 1 and 2 are connected, while step 3 uses what we learned to do something
+Lesson 1 and 2 are connected, while lesson 3 uses what we learned to do something
 totally different on a different screen.
 
 ## Screenshots
@@ -35,10 +35,10 @@ API key and support for vision and image generation models.
 > [!tip]
 > 
 > If you don't have an OpenAI key, you can technically use any local
-> model for step 1. For step 2 you will need a model with vision support.
+> model for lesson 1. For lesson 2 you will need a model with vision support.
 > These kinds of models may be accessible by using something like Ollama.
 >
-> However, if you are going to do step 3, you will need an OpenAI compatible
+> However, if you are going to do lesson 3, you will need an OpenAI compatible
 > image generation endpoint. That's trickier to mimic locally.
 
 ## Environment variables
@@ -54,7 +54,7 @@ export IMAGE_MODEL_ID="dall-e-3"
 
 >  [!info]
 > 
->  The `IMAGE_MODEL_ID` is only needed if you are doing step 3.
+>  The `IMAGE_MODEL_ID` is only needed if you are doing lesson 3.
 
 > [!info]
 > 
