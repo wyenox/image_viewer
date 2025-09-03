@@ -299,7 +299,43 @@ fn configure_slideshow_chat(&mut self, cx: &mut Cx) {
 
 ### 4. Nice UI extras.
 
-TODO
+Would be nice if we can clear the message list every time the image in the
+slideshow changes and when the slideshow itself is opened.
+
+Let's define the following utility function:
+
+```rust
+fn clear_slideshow_chat_messages(&self) {
+    self.ui
+        .chat(id!(slideshow.chat))
+        .read()
+        .messages_ref()
+        .write()
+        .messages
+        .clear();
+}
+```
+
+Then, search where the slideshow opening event is handled and add the
+corresponding call:
+
+```rust
+if self.ui.button(id!(button)).clicked(&actions) {
+    self.clear_slideshow_chat_messages(); // Add this line.
+    page_flip.set_active_page(cx, live_id!(slideshow));
+}
+```
+
+And also call this when the image changes:
+
+```rust
+fn set_current_image(&mut self, cx: &mut Cx, image_idx: usize) {
+    // ... other code ...
+
+    self.clear_slideshow_chat_messages(); // Add this line.
+    self.ui.redraw(cx);
+}
+```
 
 ## What we did
 
