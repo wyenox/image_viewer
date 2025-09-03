@@ -10,6 +10,11 @@ to reach our goal, but the principels are the same as previous lessons.
 For this lesson, what we wil do is, add a new "chat" to the image grid, with the
 purpose of generating new images in runtime!
 
+## Screenshots
+
+![screenshot](./screenshot_003_001.png)
+![screenshot](./screenshot_003_002.png)
+
 ## Steps
 
 ### Overview

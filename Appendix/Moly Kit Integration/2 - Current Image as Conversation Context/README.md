@@ -13,6 +13,10 @@ we can't change it when we really need to. To understand how, I recommend to
 read the official [Integrate and customize behavior](https://moxin-org.github.io/moly/integrate.html)
 Moly Kit guide. But to keep knowledge here, let me try to summarize it next.
 
+## Screenshots
+
+![screenshot](./screenshot_002_001.png)
+
 ## Theory
 
 ### Hooks and `ChatTask`

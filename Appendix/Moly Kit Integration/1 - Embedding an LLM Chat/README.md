@@ -9,6 +9,10 @@ At the end of this step, the chat will be fully functional but lack integration
 with the current image being displayed, as we will explore that on next parts
 of the tutorial.
 
+## Screenshots
+
+![screenshot](./screenshot_001_001.png)
+
 ## Steps
 
 ### Overview

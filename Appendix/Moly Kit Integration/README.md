@@ -20,6 +20,12 @@ capabilities.
 Steps 1 and 2 are connected, while step 3 uses what we learnt to do something
 totally different on a different screen.
 
+## Screenshots
+
+![lesson 2](./2%20-%20Current%20Image%20as%20Conversation%20Context/screenshot_002_001.png)
+![lesson 3](./3%20-%20Generating%20Images%20to%20the%20Grid/screenshot_003_002.png)
+
+
 ## Requiriments
 
 - It assumed you have the lasted version of the base image viewer working.
