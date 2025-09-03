@@ -8,7 +8,7 @@ containing abstractions, implementations and widgets for embedding LLMs in
 Makepad apps.
 
 We will construct from the [last part of the base image viewer tutorial](https://publish.obsidian.md/makepad-docs/Tutorials/Image+Viewer/7+-+Adding+Animations),
-to progresively integrate a couple of LLM chats with capabilities to interact
+to progressively integrate a couple of LLM chats with capabilities to interact
 with our previous image viewer.
 
 We will break this guide into 3 big fully functional steps:
@@ -17,7 +17,7 @@ We will break this guide into 3 big fully functional steps:
 3. Add a separate prompt input to the grid screen, with image generation
 capabilities.
 
-Steps 1 and 2 are connected, while step 3 uses what we learnt to do something
+Steps 1 and 2 are connected, while step 3 uses what we learned to do something
 totally different on a different screen.
 
 ## Screenshots
@@ -26,9 +26,9 @@ totally different on a different screen.
 ![lesson 3](./3%20-%20Generating%20Images%20to%20the%20Grid/screenshot_003_002.png)
 
 
-## Requiriments
+## Requirements
 
-- It assumed you have the lasted version of the base image viewer working.
+- It is assumed you have the latest version of the base image viewer working.
 - You should have access to an OpenAI compatible service with its respective
 API key and support for vision and image generation models.
 
@@ -36,14 +36,14 @@ API key and support for vision and image generation models.
 > 
 > If you don't have an OpenAI key, you can technically use any local
 > model for step 1. For step 2 you will need a model with vision support.
-> These kind of models may be accessible by using something like Ollama.
+> These kinds of models may be accessible by using something like Ollama.
 >
 > However, if you are going to do step 3, you will need an OpenAI compatible
-> image generation endpoint. That's tricker to mimic locally.
+> image generation endpoint. That's trickier to mimic locally.
 
-## Enviroment variables
+## Environment variables
 
-You will eventually need to configure the following enviroment variables.
+You will eventually need to configure the following environment variables.
 
 ```shell
 export API_URL="https://api.openai.com/v1" # Or compatible
