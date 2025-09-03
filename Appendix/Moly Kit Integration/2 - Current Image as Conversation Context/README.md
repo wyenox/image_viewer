@@ -2,15 +2,14 @@
 
 ## Introduction
 
-On the previous step we embedded Moly Kit's `Chat` widget into our slideshow
-screen, which once configured, it worked automatically to talk to LLM models.
+In the previous step we embedded Moly Kit's `Chat` widget into our slideshow
+screen, which once configured, worked automatically to talk to LLM models.
 
 However, to make this a real integration, we would like to let the LLM model
 "see" the current image in the slideshow, so we can ask questions about it.
 
 Don't be fooled, even if Moly Kit `Chat` has a default behavior, it doesn't mean
-we can't change it when we really need to. To understand how, I recommend to
-read the official [Integrate and customize behavior](https://moxin-org.github.io/moly/integrate.html)
+we can't change it when we really need to. To understand how, I recommend reading the official [Integrate and customize behavior](https://moxin-org.github.io/moly/integrate.html)
 Moly Kit guide. But to keep knowledge here, let me try to summarize it next.
 
 ## Screenshots
@@ -22,26 +21,26 @@ Moly Kit guide. But to keep knowledge here, let me try to summarize it next.
 ### Hooks and `ChatTask`
 
 Every important behavior in `Chat` (like updating messages, sending them,
-copying to clipboard, etc) is identified with an enum called a `ChatTask`.
+copying to clipboard, etc.) is identified with an enum called a `ChatTask`.
 When `Chat` is about to do something, it emits a `ChatTask`, that when received
-back, it performs the action for real.
+back, performs the action for real.
 
 However, `Chat` allows us to "hook" between that "send and receive" flow,
 giving us the chance to modify those tasks before they are performed. To do so,
 we simply configure a subscriber closure we call the "hook" using the
 `set_hook_before` function. The closure will receive a **vector** of tasks that
 were originally dispatched together. As we said before, modifying any of the
-tasks on the vector will impact the final result once performed. Additionally
+tasks in the vector will impact the final result once performed. Additionally,
 you can inject new tasks into the vector, or simply `clear()` it to cancel all
-default behaviors and handle everything your own.
+default behaviors and handle everything on your own.
 
-If you are cancelling (cleaning the vector), then you may be interested on the
-`.perform()` and `.dispatch()` methods of `Chat`, which allows you to
-programatically trigger those behaviors yourself. The only difference between
-the two, is that `perform` "bypasses" the hook, while `dispatch` causes it to be
+If you are cancelling (cleaning the vector), then you may be interested in the
+`.perform()` and `.dispatch()` methods of `Chat`, which allow you to
+programmatically trigger those behaviors yourself. The only difference between
+the two is that `perform` "bypasses" the hook, while `dispatch` causes it to be
 triggered.
 
-For our purposes of this tutorial, one option would be to use a hook to wait for
+For our purposes in this tutorial, one option would be to use a hook to wait for
 `ChatTask::Send`, to insert a message in the chat with the image before it's
 sent. But that would not look clean. It would be better if the image could be
 "injected silently" without touching the chat history. To do so, let me also
@@ -54,11 +53,11 @@ saw the `OpenAIClient` before, which was a built-in implementation of that.
 
 But we can also make our own, tailored to our needs. The
 [Implement your own client](https://moxin-org.github.io/moly/custom-client.html)
-guide in Moly Kit covers this trait and how to implement it but it's considered
-"advanced", and we don't care about many of this details.
+guide in Moly Kit covers this trait and how to implement it, but it's considered
+"advanced", and we don't care about many of these details.
 
 What we will want is to make our own `SlideshowClient` that simply wraps the
-existing `OpenAIClient`, delegating most of it's implementation, but customizing
+existing `OpenAIClient`, delegating most of its implementation, but customizing
 the `send()` implementation to inject a message with the image attached as
 context.
 
@@ -66,7 +65,7 @@ context.
 
 ### Overview
 
-Okey, now we have the required theory, let's put this into practice. To allow
+Okay, now we have the required theory, let's put this into practice. To allow
 the `Chat` to "see" our current image we will do something like the following:
 
 1. Implement a wrapper `SlideshowClient` that simply wraps `OpenAIClient`
@@ -96,7 +95,7 @@ use std::sync::{Arc, Mutex};
 // Here, we will hold the attachment to be sent to the LLM and the `OpenAIClient`
 // to which we will delegate most of the behavior.
 struct SlideshowClientInner {
-    // An `Attachment` is how Moly Kit represents all kind of files that are
+    // An `Attachment` is how Moly Kit represents all kinds of files that are
     // exchanged with LLMs. This will be our image when set.
     attachment: Option<Attachment>,
     openai_client: OpenAIClient,
@@ -131,7 +130,7 @@ impl BotClient for SlideshowClient {
     }
 
     // The only method we are truly working with.
-    // This methods takes a list a messages and sends it to the given bot.
+    // This method takes a list of messages and sends it to the given bot.
     fn send(
         &mut self,
         bot_id: &BotId,
@@ -141,7 +140,7 @@ impl BotClient for SlideshowClient {
         // Let's turn the immutable slice into a vec we can modify.
         let mut messages = messages.to_vec();
 
-        // Let's insert the image as a message at the beggining (if any).
+        // Let's insert the image as a message at the beginning (if any).
         if let Some(attachment) = &self.0.lock().unwrap().attachment {
             messages.insert(
                 0,
@@ -182,7 +181,7 @@ impl SlideshowClient {
 > [!info] 
 >
 > Please note we are only really working with the `send()` method, and even so, we
-> don't need to understand every type involved thanks to our relaiance on the
+> don't need to understand every type involved thanks to our reliance on the
 > already implemented `OpenAIClient`.
 
 We will update our `App` widget to hold the copy of this we mentioned:
@@ -190,7 +189,7 @@ We will update our `App` widget to hold the copy of this we mentioned:
 ```rust
 #[derive(Live)]
 struct App {
-    // ... other fields ...
+    // ...other fields...
     #[rust]
     slideshow_client: Option<SlideshowClient>,
 }
@@ -201,7 +200,7 @@ existing `OpenAIClient` from the previous tutorial chapter:
 
 ```rust
 fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
-    // ... previous code ...
+    // ...existing code...
 
     // The client we already had from before, unmodified.
     let mut client = OpenAIClient::new(url);
@@ -215,14 +214,13 @@ fn configure_slideshow_chat_context(&mut self, cx: &mut Cx) {
     // The context from before, unmodified.
     let mut bot_context = BotContext::from(client);
 
-    // ... more code ...
+    // ...existing code...
 }
 ```
 
 > [!info]
 >
-> Please note we simply inserted 2 lines in the midle of what we already had.
-
+> Please note we simply inserted 2 lines in the middle of what we already had.
 
 ### 2. The hook
 
@@ -243,17 +241,17 @@ fn configure_slideshow_chat_before_hook(&mut self, _cx: &mut Cx) {
     let ui = self.ui_runner();
     let mut chat = self.ui.chat(id!(slideshow.chat));
 
-    // Here, our hook is receving the (grouped) list of tasks that our `Chat`
+    // Here, our hook is receiving the (grouped) list of tasks that our `Chat`
     // emits for us when doing something important.
     chat.write().set_hook_before(move |task_group, _chat, _cx| {
         let before_len = task_group.len();
 
         // We delete any `ChatTask::Send` from the group so, whatever
-        // happens, it will not cause an automatic send, but other behaviours
-        // are still performed autoamtically.
+        // happens, it will not cause an automatic send, but other behaviors
+        // are still performed automatically.
         task_group.retain(|task| *task != ChatTask::Send);
 
-        // If a there was a `ChatTask::Send`, let's handle the send ourselves by
+        // If there was a `ChatTask::Send`, let's handle the send ourselves by
         // calling a `perform_chat_send` method (we will define it next).
         if task_group.len() != before_len {
             // `defer` in Makepad's `UiRunner` will be executed later at
@@ -267,7 +265,7 @@ fn configure_slideshow_chat_before_hook(&mut self, _cx: &mut Cx) {
 }
 ```
 
-Then, we will need to implement `perform_chat_send`. This will where the
+Then, we will need to implement `perform_chat_send`. This is where the
 integration is truly completed. It will:
 
 - Get the current image.
@@ -276,7 +274,7 @@ integration is truly completed. It will:
 - Read the file bytes to memory.
 - Construct the `Attachment` and set it in our `SlideshowClient` we stored in
 `App`.
-- Trigger `ChatTask::Send` to allows the normal send flow to happen.
+- Trigger `ChatTask::Send` to allow the normal send flow to happen.
 
 The code:
 
@@ -291,9 +289,9 @@ fn perform_chat_send(&mut self, cx: &mut Cx) {
         self.state.image_paths[self.state.current_image_idx].as_path();
 
     // Try to infer the mime type by just looking at the extension. This is a
-    // navy implementation. To do this in a serious app, you may want to use a
-    // crate like `mime_guess`, or one that sniffes the real type from the
-    // binary content. But this is enough for our tutorial usecases.
+    // naive implementation. To do this in a serious app, you may want to use a
+    // crate like `mime_guess`, or one that sniffs the real type from the
+    // binary content. But this is enough for our tutorial use cases.
     let extension = path.extension().and_then(|e| e.to_str());
     let mime = extension.map(|e| match e {
         "jpg" | "jpeg" => "image/jpeg".to_string(),
@@ -344,7 +342,7 @@ overriding the Makepad DSL to hide the left side of the prompt input like this:
 
 ```rust
 chat = <Chat> {
-    // ... other overrides ...
+    // ...other overrides...
 
     prompt = {
         persistent = {
@@ -353,7 +351,7 @@ chat = <Chat> {
                     visible: false
                 }
 
-                // ... other overrides ...
+                // ...other overrides...
             }
         }
     }
@@ -362,7 +360,7 @@ chat = <Chat> {
 
 ## What we did
 
-Now, we have a chat in slideshow that can "see" our current image! Try making
+Now, we have a chat in slideshow that can "see" our current image! Try asking
 it some questions like "what do you see?" to test it.
 
 ## What's Next
