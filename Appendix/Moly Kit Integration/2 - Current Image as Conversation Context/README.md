@@ -365,6 +365,7 @@ it some questions like "what do you see?" to test it.
 
 ## What's Next
 
-What we did until now is already complete. The next chapter will use the
-knowledge we gained to create, configure and integrate a new separate "chat",
-that will be put in the image grid screen to generate new images at runtime!
+What we did until now is already complete. The [next lesson](../3%20-%20Generating%20Images%20to%20the%20Grid/README.md)
+will use the knowledge we gained to create, configure and integrate a new
+separate "chat", that will be put in the image grid screen to generate new
+images at runtime!

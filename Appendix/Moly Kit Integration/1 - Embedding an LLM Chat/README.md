@@ -350,6 +350,7 @@ embedded, and it will be working (independently of our app).
 
 ## What's Next
 
-We will hook into our `Chat`'s pipeline to inject the current image being viewed in
-the slideshow as additional context. This way we will be able to ask things
+In the [next lesson](../2%20-%20Current%20Image%20as%20Conversation%20Context/README.md),
+we will hook into our `Chat`'s pipeline to inject the current image being viewed
+in the slideshow as additional context. This way we will be able to ask things
 about our image.
