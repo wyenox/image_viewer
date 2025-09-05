@@ -21,6 +21,7 @@ live_design! {
     }
 
     SlideshowButton = <Button> {
+        margin: 0,
         width: 50,
         height: Fill,
         draw_bg: {

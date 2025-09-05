@@ -8,6 +8,7 @@ live_design! {
     PLACEHOLDER = dep("crate://self/resources/placeholder.png");
 
     SlideshowButton = <Button> {
+        margin: 0,
         width: 50,
         height: Fill,
         draw_bg: {

@@ -7,6 +7,7 @@ live_design! {
     RIGHT_ARROW = dep("crate://self/resources/right_arrow.svg");
 
     SlideshowButton = <Button> {
+        margin: 0,
         width: 50,
         height: Fill,
         draw_bg: {

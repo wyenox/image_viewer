@@ -8,15 +8,67 @@ live_design! {
     RIGHT_ARROW = dep("crate://self/resources/right_arrow.svg");
     PLACEHOLDER = dep("crate://self/resources/placeholder.png");
 
+    MenuBarButton = <Button> {
+        text: "Slideshow",
+    }
+
+    MenuBar = <View> {
+        width: Fill,
+        height: Fit,
+        align: {
+            x: 1.0,
+        },
+
+        button = <MenuBarButton> {}
+    }
+
     ImageGridItem = <View> {
         width: 256,
         height: 256,
+        align: {
+            x: 0.5,
+            y: 0.5,
+        },
 
-        image = <Image> {
-            width: Fill,
-            height: Fill,
-            fit: Biggest,
-            source: (PLACEHOLDER),
+        <View> {
+            animator: {
+                hover = {
+                    default: off,
+                    
+                    off = {
+                        from: {
+                            all: Forward {
+                                duration: 0.1,
+                            },
+                        },
+                        apply: {
+                            width: 230,
+                            height: 230,
+                        },
+                        redraw: true,
+                    }
+    
+                    on = {
+                        from: {
+                            all: Forward {
+                                duration: 0.1,
+                            },
+                        },
+                        apply: {
+                            width: 256,
+                            height: 256,
+                        },
+                        redraw: true,
+                    }
+                }
+            }
+
+            image = <Image> {
+                width: Fill,
+                height: Fill,
+                fit: Biggest,
+                source: (PLACEHOLDER),
+            }
         }
     }
 
@@ -48,9 +100,16 @@ live_design! {
                     }
                 },
             },
-            
+
             Row = <ImageGridRow> {}
         }
+    }
+
+    ImageBrowser = <View> {
+        flow: Down,
+
+        menu_bar = <MenuBar> {}
+        image_grid = <ImageGrid> {}
     }
 
     SlideshowButton = <Button> {
@@ -58,8 +117,68 @@ live_design! {
         width: 50,
         height: Fill,
         draw_bg: {
-            color: #FFF0,
-            color_down: #FFF2,
+            fn hash(x: float, seed: float) -> float {
+                let x3 = fract(vec3(x) * vec3(0.1031, 0.11369, 0.13787));
+                x3 += dot(x3, x3.yzx + 33.33);
+                return fract((x3.x + x3.y) * x3.z);
+            }
+
+            fn hash2(x: vec2, seed: float) -> float {
+                let x3 = fract(vec3(x.xyx) * 0.1031);
+                x3 += dot(x3, x3.yzx + 33.33);
+                return fract((x3.x + x3.y) * x3.z);
+            }
+            
+            fn gradient(hash: float) -> vec2 {
+                let t = hash * 6.28;
+                return vec2(cos(t), sin(t));
+            }
+
+            fn interpolate(v0: float, v1: float, v2: float, v3: float, t: vec2) -> float {
+                return mix(mix(v0, v1, t.x), mix(v2, v3, t.x), t.y);
+            }
+            
+            fn smootherstep(t: vec2) -> vec2 {
+                return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
+            }
+
+            fn noise(p: vec2, seed: float) -> float {
+                let i = floor(p);
+                let f = fract(p);
+                
+                let g0 = gradient(hash2(i, seed));
+                let g1 = gradient(hash2((i + vec2(1.0, 0.0)), seed));
+                let g2 = gradient(hash2((i + vec2(0.0, 1.0)), seed));
+                let g3 = gradient(hash2((i + vec2(1.0, 1.0)), seed));
+                
+                let v0 = dot(g0, f);
+                let v1 = dot(g1, f - vec2(1.0, 0.0));
+                let v2 = dot(g2, f - vec2(0.0, 1.0));
+                let v3 = dot(g3, f - vec2(1.0, 1.0));
+                
+                return interpolate(v0, v1, v2, v3, smootherstep(f));
+            }
+
+            fn pixel(self) -> vec4 {
+                let p = self.pos;
+                p.x *= self.rect_size.x / self.rect_size.y;
+                p += self.time * 0.25;
+
+                let x = 0.0;
+                let seed = 1.234;
+                let freq = 4.0;
+                let ampl = 1.0;
+                for i in 0..8 {
+                    x += noise(p * freq, seed) * ampl;
+                    seed = hash(seed, 0.0);
+                    freq *= 2.0;
+                    ampl /= 2.0;
+                }
+                x = (x + 1.0) * 0.5;
+                x *= self.hover;
+
+                return vec4(vec3(x), 0.05);
+            }
         },
         icon_walk: {
             width: 10
@@ -100,7 +219,12 @@ live_design! {
         ui: <Root> {
             <Window> {
                 body = <View> {
-                    <ImageGrid> {}
+                    page_flip = <PageFlip> {
+                        active_page: image_browser,
+
+                        image_browser = <ImageBrowser> {}
+                        slideshow = <Slideshow> {}
+                    }
                 }
             }
         }
@@ -181,6 +305,12 @@ impl AppMain for App {
 
 impl MatchEvent for App {
     fn handle_actions(&mut self, cx: &mut Cx, actions: &Actions) {
+        let page_flip = self.ui.page_flip(id!(page_flip));
+
+        if self.ui.button(id!(button)).clicked(&actions) {
+            page_flip.set_active_page(cx, live_id!(slideshow));
+        }
+        
         if self.ui.button(id!(left_button)).clicked(&actions) {
             self.go_to_previous_image(cx);
         }
@@ -190,6 +320,7 @@ impl MatchEvent for App {
 
         if let Some(event) = self.ui.view(id!(overlay)).key_down(&actions) {
             match event.key_code {
+                KeyCode::Escape => page_flip.set_active_page(cx, live_id!(image_browser)),
                 KeyCode::ArrowLeft => self.go_to_previous_image(cx),
                 KeyCode::ArrowRight => self.go_to_next_image(cx),
                 _ => {}
