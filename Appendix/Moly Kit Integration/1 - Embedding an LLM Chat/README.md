@@ -312,9 +312,15 @@ fn clear_slideshow_chat_messages(&self) {
         .messages_ref()
         .write()
         .messages
-        .clear();
+        .retain(|m| m.from == EntityId::App);
 }
 ```
+
+> [!info]
+>
+> We are using `retain()` instead of just `clear()` to preserve custom app
+> messages, as they may be the error messages we inserted during the `BotContext`
+> `load()` handling.
 
 Then, search where the slideshow opening event is handled and add the
 corresponding call:

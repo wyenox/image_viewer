@@ -295,7 +295,7 @@ impl App {
             .messages_ref()
             .write()
             .messages
-            .clear();
+            .retain(|m| m.from == EntityId::App);
     }
 }
 

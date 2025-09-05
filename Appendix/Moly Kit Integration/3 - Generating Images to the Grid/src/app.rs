@@ -391,7 +391,7 @@ impl App {
             .messages_ref()
             .write()
             .messages
-            .clear();
+            .retain(|m| m.from == EntityId::App);
     }
 
     fn configure_image_browser_chat(&mut self, cx: &mut Cx) {
