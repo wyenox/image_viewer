@@ -5,7 +5,7 @@ version = 4
 [[package]]
 name = "ab_glyph_rasterizer"
 version = "0.1.8"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "addr2line"
@@ -346,9 +346,9 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
 name = "bitflags"
-version = "2.9.1"
+version = "2.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b8e56985ec62d17e9c1001dc89c88ecd7dc08e47eba5ec7c29c7b5eeecde967"
+checksum = "2261d10cca569e4643e526d8dc2e62e433cc8aba21ab764233731f8d369bf394"
 
 [[package]]
 name = "block-buffer"
@@ -407,9 +407,9 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 
 [[package]]
 name = "cc"
-version = "1.2.35"
+version = "1.2.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "590f9024a68a8c40351881787f1934dc11afd69090f5edb6831464694d836ea3"
+checksum = "5252b3d2648e5eedbc1a6f501e3c795e07025c1e93bbf8bbdd6eef7f447a6d54"
 dependencies = [
  "find-msvc-tools",
  "shlex",
@@ -423,9 +423,9 @@ checksum = "6d43a04d8753f35258c91f8ec639f792891f748a1edbd759cf1dcea3382ad83c"
 
 [[package]]
 name = "cfg-if"
-version = "1.0.1"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268"
+checksum = "2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9"
 
 [[package]]
 name = "cfg_aliases"
@@ -598,9 +598,9 @@ checksum = "2a2330da5de22e8a3cb63252ce2abb30116bf5265e89c0e01bc17015ce30a476"
 
 [[package]]
 name = "data-url"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5c297a1c74b71ae29df00c3e22dd9534821d60eb9af5a0192823fa2acea70c2a"
+checksum = "be1e0bca6c3637f992fc1cc7cbc52a78c1ef6db076dbf1059c4323d6a2048376"
 
 [[package]]
 name = "derive_more"
@@ -629,7 +629,7 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "89a09f22a6c6069a18470eb92d2298acf25463f14256d24778e1230d789a2aec"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "block2",
  "libc",
  "objc2",
@@ -801,9 +801,9 @@ dependencies = [
 
 [[package]]
 name = "find-msvc-tools"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e178e4fba8a2726903f6ba98a6d221e76f9c12c650d5dc0e6afdc50677b49650"
+checksum = "7fd99930f64d146689264c637b5af2f0233a933bef0d8570e2526bf9e083192d"
 
 [[package]]
 name = "flate2"
@@ -1159,7 +1159,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.56.0",
+ "windows-core 0.61.2",
 ]
 
 [[package]]
@@ -1314,7 +1314,7 @@ version = "0.7.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "046fa2d4d00aea763528b4950358d0ead425372445dc8ff86312b3c69ff7727b"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "cfg-if",
  "libc",
 ]
@@ -1395,9 +1395,9 @@ checksum = "8eaf4bc02d17cbdd7ff4c7438cafcdf7fb9a4613313ad11b4f8fefe7d3fa0130"
 
 [[package]]
 name = "js-sys"
-version = "0.3.77"
+version = "0.3.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cfaf33c695fc6e08064efbc1f72ec937429614f25eef83af942d0e227c3a28f"
+checksum = "0c0b063578492ceec17683ef2f8c5e89121fbd0b172cbc280635ab7567db2738"
 dependencies = [
  "once_cell",
  "wasm-bindgen",
@@ -1454,9 +1454,9 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.27"
+version = "0.4.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
+checksum = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
 
 [[package]]
 name = "lru-slab"
@@ -1482,7 +1482,7 @@ dependencies = [
 [[package]]
 name = "makepad-code-editor"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-widgets",
 ]
@@ -1490,7 +1490,7 @@ dependencies = [
 [[package]]
 name = "makepad-derive-live"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-live-id",
  "makepad-micro-proc-macro",
@@ -1499,7 +1499,7 @@ dependencies = [
 [[package]]
 name = "makepad-derive-wasm-bridge"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-micro-proc-macro",
 ]
@@ -1507,7 +1507,7 @@ dependencies = [
 [[package]]
 name = "makepad-derive-widget"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-live-id",
  "makepad-micro-proc-macro",
@@ -1516,7 +1516,7 @@ dependencies = [
 [[package]]
 name = "makepad-draw"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "ab_glyph_rasterizer",
  "fxhash",
@@ -1535,7 +1535,7 @@ dependencies = [
 [[package]]
 name = "makepad-fonts-chinese-bold"
 version = "1.0.1"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-platform",
 ]
@@ -1543,7 +1543,7 @@ dependencies = [
 [[package]]
 name = "makepad-fonts-chinese-bold-2"
 version = "1.0.1"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-platform",
 ]
@@ -1551,7 +1551,7 @@ dependencies = [
 [[package]]
 name = "makepad-fonts-chinese-regular"
 version = "1.0.1"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-platform",
 ]
@@ -1559,7 +1559,7 @@ dependencies = [
 [[package]]
 name = "makepad-fonts-chinese-regular-2"
 version = "1.0.1"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-platform",
 ]
@@ -1567,7 +1567,7 @@ dependencies = [
 [[package]]
 name = "makepad-fonts-emoji"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-platform",
 ]
@@ -1575,17 +1575,17 @@ dependencies = [
 [[package]]
 name = "makepad-futures"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "makepad-futures-legacy"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "makepad-html"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-live-id",
 ]
@@ -1593,7 +1593,7 @@ dependencies = [
 [[package]]
 name = "makepad-http"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "makepad-jni-sys"
@@ -1604,7 +1604,7 @@ checksum = "9775cbec5fa0647500c3e5de7c850280a88335d1d2d770e5aa2332b801ba7064"
 [[package]]
 name = "makepad-live-compiler"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-derive-live",
  "makepad-live-tokenizer",
@@ -1614,7 +1614,7 @@ dependencies = [
 [[package]]
 name = "makepad-live-id"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-live-id-macros",
 ]
@@ -1622,7 +1622,7 @@ dependencies = [
 [[package]]
 name = "makepad-live-id-macros"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-micro-proc-macro",
 ]
@@ -1630,7 +1630,7 @@ dependencies = [
 [[package]]
 name = "makepad-live-tokenizer"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-live-id",
  "makepad-math",
@@ -1640,7 +1640,7 @@ dependencies = [
 [[package]]
 name = "makepad-math"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-micro-serde",
 ]
@@ -1648,12 +1648,12 @@ dependencies = [
 [[package]]
 name = "makepad-micro-proc-macro"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "makepad-micro-serde"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-live-id",
  "makepad-micro-serde-derive",
@@ -1662,7 +1662,7 @@ dependencies = [
 [[package]]
 name = "makepad-micro-serde-derive"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-micro-proc-macro",
 ]
@@ -1670,14 +1670,14 @@ dependencies = [
 [[package]]
 name = "makepad-objc-sys"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "makepad-platform"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "hilog-sys",
  "makepad-android-state",
  "makepad-futures",
@@ -1699,7 +1699,7 @@ dependencies = [
 [[package]]
 name = "makepad-rustybuzz"
 version = "0.8.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "bitflags 1.3.2",
  "bytemuck",
@@ -1714,7 +1714,7 @@ dependencies = [
 [[package]]
 name = "makepad-shader-compiler"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-live-compiler",
 ]
@@ -1722,12 +1722,12 @@ dependencies = [
 [[package]]
 name = "makepad-ttf-parser"
 version = "0.21.1"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "makepad-vector"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-ttf-parser",
  "resvg",
@@ -1736,7 +1736,7 @@ dependencies = [
 [[package]]
 name = "makepad-wasm-bridge"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-derive-wasm-bridge",
  "makepad-live-id",
@@ -1745,7 +1745,7 @@ dependencies = [
 [[package]]
 name = "makepad-widgets"
 version = "1.0.0"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-derive-widget",
  "makepad-draw",
@@ -1764,15 +1764,15 @@ dependencies = [
 [[package]]
 name = "makepad-zune-core"
 version = "0.2.14"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
 ]
 
 [[package]]
 name = "makepad-zune-jpeg"
 version = "0.3.17"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "makepad-zune-core",
 ]
@@ -1780,7 +1780,7 @@ dependencies = [
 [[package]]
 name = "makepad-zune-png"
 version = "0.4.10"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 dependencies = [
  "zune-core",
  "zune-inflate",
@@ -1866,7 +1866,7 @@ dependencies = [
 [[package]]
 name = "moly-kit"
 version = "0.2.1"
-source = "git+https://github.com/moxin-org/moly.git?branch=main#1684a22806c03512ab58307952fa1f60cc1032ab"
+source = "git+https://github.com/moxin-org/moly.git?branch=main#01fb5bf183a3bc3d8aa55da9ef4864dc0ce2476e"
 dependencies = [
  "async-stream",
  "base64",
@@ -1927,7 +1927,7 @@ version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad5a3bbb2ae61f345b8c11776f2e79fc2bb71d1901af9a5f81f03c9238a05d86"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "ctor",
  "napi-sys-ohos",
  "once_cell",
@@ -1960,7 +1960,7 @@ version = "0.30.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "74523f3a35e05aba87a1d978330aef40f67b0304ac79c1c00b294c9830543db6"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "cfg-if",
  "cfg_aliases",
  "libc",
@@ -1991,7 +1991,7 @@ version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e6f29f568bec459b0ddff777cec4fe3fd8666d82d5a40ebd0ff7e66134f89bcc"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "block2",
  "objc2",
  "objc2-foundation",
@@ -2003,7 +2003,7 @@ version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1c10c2894a6fed806ade6027bcd50662746363a9589d3ec9d9bef30a4e4bc166"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "dispatch2",
  "objc2",
 ]
@@ -2020,7 +2020,7 @@ version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "900831247d2fe1a09a683278e5384cfb8c80c79fe6b166f9d14bfdde0ea1b03c"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "objc2",
  "objc2-core-foundation",
 ]
@@ -2031,7 +2031,7 @@ version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "25b1312ad7bc8a0e92adae17aa10f90aae1fb618832f9b993b022b591027daed"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "block2",
  "objc2",
  "objc2-foundation",
@@ -2285,9 +2285,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.95"
+version = "1.0.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "02b3e5e68a3a1a02aad3ec490a98007cbc13c37cbe84a3cd7b8e406d76e7f778"
+checksum = "89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de"
 dependencies = [
  "unicode-ident",
 ]
@@ -2312,7 +2312,7 @@ version = "0.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f86ba2052aebccc42cbbb3ed234b8b13ce76f75c3551a303cb2bcffcff12bb14"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "memchr",
  "pulldown-cmark-escape",
  "unicase",
@@ -2474,7 +2474,7 @@ version = "0.5.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5407465600fb0548f1442edf71dd20683c6ed326200ace4b1ef0763521bb3b77"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
 ]
 
 [[package]]
@@ -2499,9 +2499,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.11.1"
+version = "1.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b544ef1b4eac5dc2db33ea63606ae9ffcfac26c1416a2806ae0bf5f56b201191"
+checksum = "23d7fd106d8c02486a8d64e778353d1cffe08ce79ac2e82f540c86d0facf6912"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -2511,9 +2511,9 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.9"
+version = "0.4.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "809e8dc61f6de73b46c85f4c96486310fe304c434cfa43669d7b40f711150908"
+checksum = "6b9458fa0bfeeac22b5ca447c63aaf45f28439a709ccd244698632f9aa6394d6"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -2522,9 +2522,9 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.5"
+version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
+checksum = "caf4aa5b0f434c91fe5c7f1ecb6a5ece2130b02ad2a590589dda5146df959001"
 
 [[package]]
 name = "reqwest"
@@ -2630,8 +2630,8 @@ dependencies = [
 
 [[package]]
 name = "rmcp"
-version = "0.6.1"
-source = "git+https://www.github.com/modelcontextprotocol/rust-sdk#b0e2c11df309a7e58845de0c810e5abf87071a04"
+version = "0.6.3"
+source = "git+https://www.github.com/modelcontextprotocol/rust-sdk#fdd6bc05654381951754ef687df0c17407d8109d"
 dependencies = [
  "base64",
  "chrono",
@@ -2655,8 +2655,8 @@ dependencies = [
 
 [[package]]
 name = "rmcp-macros"
-version = "0.6.1"
-source = "git+https://www.github.com/modelcontextprotocol/rust-sdk#b0e2c11df309a7e58845de0c810e5abf87071a04"
+version = "0.6.3"
+source = "git+https://www.github.com/modelcontextprotocol/rust-sdk#fdd6bc05654381951754ef687df0c17407d8109d"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -2716,7 +2716,7 @@ version = "1.0.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "11181fbabf243db407ef8df94a6ce0b2f9a733bd8be4ad02b4eda9602296cac8"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "errno",
  "libc",
  "linux-raw-sys",
@@ -2835,7 +2835,7 @@ dependencies = [
 [[package]]
 name = "sdfer"
 version = "0.2.1"
-source = "git+https://github.com/wyeworks/makepad?branch=moly#301b41e6515246277e2c13615f45a1904b5a7286"
+source = "git+https://github.com/wyeworks/makepad?branch=moly#e973ca1e1abbbf9b8e19cade536176043f040769"
 
 [[package]]
 name = "selectors"
@@ -2843,7 +2843,7 @@ version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd568a4c9bb598e291a08244a5c1f5a8a6650bee243b5b0f8dbb3d9cc1d87fe8"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "cssparser",
  "derive_more",
  "fxhash",
@@ -3083,9 +3083,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.104"
+version = "2.0.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17b6f705963418cdb9927482fa304bc562ece2fdd4f616084c50b7023b435a40"
+checksum = "ede7c438028d4436d71104916910f5bb611972c5cfd7f89b8300a8186e6fada6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3345,7 +3345,7 @@ version = "0.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "adc82fd73de2a9722ac5da747f12383d2bfdb93591ee6c58486e0097890f05f2"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "bytes",
  "futures-util",
  "http",
@@ -3615,21 +3615,22 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen"
-version = "0.2.100"
+version = "0.2.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1edc8929d7499fc4e8f0be2262a241556cfc54a0bea223790e71446f2aab1ef5"
+checksum = "7e14915cadd45b529bb8d1f343c4ed0ac1de926144b746e2710f9cd05df6603b"
 dependencies = [
  "cfg-if",
  "once_cell",
  "rustversion",
  "wasm-bindgen-macro",
+ "wasm-bindgen-shared",
 ]
 
 [[package]]
 name = "wasm-bindgen-backend"
-version = "0.2.100"
+version = "0.2.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f0a0651a5c2bc21487bde11ee802ccaf4c51935d0d3d42a6101f98161700bc6"
+checksum = "e28d1ba982ca7923fd01448d5c30c6864d0a14109560296a162f80f305fb93bb"
 dependencies = [
  "bumpalo",
  "log",
@@ -3641,9 +3642,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-futures"
-version = "0.4.50"
+version = "0.4.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "555d470ec0bc3bb57890405e5d4322cc9ea83cebb085523ced7be4144dac1e61"
+checksum = "0ca85039a9b469b38336411d6d6ced91f3fc87109a2a27b0c197663f5144dffe"
 dependencies = [
  "cfg-if",
  "js-sys",
@@ -3654,9 +3655,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro"
-version = "0.2.100"
+version = "0.2.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7fe63fc6d09ed3792bd0897b314f53de8e16568c2b3f7982f468c0bf9bd0b407"
+checksum = "7c3d463ae3eff775b0c45df9da45d68837702ac35af998361e2c84e7c5ec1b0d"
 dependencies = [
  "quote",
  "wasm-bindgen-macro-support",
@@ -3664,9 +3665,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro-support"
-version = "0.2.100"
+version = "0.2.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ae87ea40c9f689fc23f209965b6fb8a99ad69aeeb0231408be24920604395de"
+checksum = "7bb4ce89b08211f923caf51d527662b75bdc9c9c7aab40f86dcb9fb85ac552aa"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3677,9 +3678,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-shared"
-version = "0.2.100"
+version = "0.2.101"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a05d73b933a847d6cccdda8f838a22ff101ad9bf93e33684f39c1f5f0eece3d"
+checksum = "f143854a3b13752c6950862c906306adb27c7e839f7414cec8fea35beab624c1"
 dependencies = [
  "unicode-ident",
 ]
@@ -3717,7 +3718,7 @@ version = "0.31.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c66a47e840dc20793f2264eb4b3e4ecb4b75d91c0dd4af04b456128e0bdd449d"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "rustix",
  "wayland-backend",
  "wayland-scanner",
@@ -3729,7 +3730,7 @@ version = "0.32.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "efa790ed75fbfd71283bd2521a1cfdc022aabcc28bdcff00851f9e4ae88d9901"
 dependencies = [
- "bitflags 2.9.1",
+ "bitflags 2.9.4",
  "wayland-backend",
  "wayland-client",
  "wayland-scanner",
@@ -3759,9 +3760,9 @@ dependencies = [
 
 [[package]]
 name = "web-sys"
-version = "0.3.77"
+version = "0.3.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33b6dd2ef9186f1f2072e409e99cd22a975331a6b3591b12c764e0e55c60d5d2"
+checksum = "77e4b637749ff0d92b8fad63aa1f7cff3cbe125fd49c175cd6345e7272638b12"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
@@ -4223,9 +4224,9 @@ dependencies = [
 
 [[package]]
 name = "wit-bindgen"
-version = "0.45.0"
+version = "0.45.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "052283831dbae3d879dc7f51f3d92703a316ca49f91540417d38591826127814"
+checksum = "5c573471f125075647d03df72e026074b7203790d41351cd6edc96f46bcccd36"
 
 [[package]]
 name = "writeable"
