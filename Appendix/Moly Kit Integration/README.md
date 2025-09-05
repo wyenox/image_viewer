@@ -65,7 +65,7 @@ export IMAGE_MODEL_ID="dall-e-3"
 ## Useful links
 
 - [The official Moly Kit guide](https://moxin-org.github.io/moly/basics.html)
-- Moly Kit crate documentation
+- [Moly Kit crate documentation](https://moxin-org.github.io/moly/docs/moly_kit)
 
 ## Overview
 
