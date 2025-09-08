@@ -378,6 +378,94 @@ impl App {
             .messages
             .retain(|m| m.from == EntityId::App);
     }
+
+    fn handle_image_generation(&self, cx: &mut Cx, text: String) {
+        let prompt_input = self.ui.text_input(id!(prompt_input));
+
+        prompt_input.set_text(cx, "Generating...");
+        prompt_input.set_is_read_only(cx, true);
+
+        let url = std::env::var("API_URL").unwrap_or_default();
+        let key = std::env::var("API_KEY").unwrap_or_default();
+        let model_id = std::env::var("IMAGE_MODEL_ID").unwrap_or_default();
+
+        let bot_id = BotId::new(&model_id, &url);
+
+        let mut client = OpenAIImageClient::new(url);
+        client.set_key(&key).unwrap();
+
+        let message = Message {
+            from: EntityId::User,
+            content: MessageContent {
+                text: text,
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+
+        let ui = self.ui_runner();
+        spawn(async move {
+            let response = client
+                .send(&bot_id, &[message], &[])
+                .next()
+                .await
+                .map(|res| res.into_result());
+
+            match response {
+                Some(Ok(message_content)) => {
+                    let attachment = message_content.attachments.first();
+                    let Some(attachment) = attachment else {
+                        eprintln!("Error: No attachment in the response");
+                        return;
+                    };
+
+                    let bytes = attachment.read().await;
+                    let bytes = match bytes {
+                        Ok(bytes) => bytes,
+                        Err(e) => {
+                            eprintln!("Error reading attachment: {e}");
+                            return;
+                        }
+                    };
+
+                    let now = std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .unwrap()
+                        .as_secs();
+
+                    let filename = format!("generated_image_{now}.png");
+                    let path = Path::new(IMAGES_PATH).join(&filename);
+
+                    println!("Saving generated image to {path:?}");
+
+                    if let Err(e) = std::fs::write(&path, &bytes) {
+                        eprintln!(
+                            "Error saving generated image to {path:?}: {e}"
+                        );
+                        return;
+                    }
+
+                    ui.defer(move |me, cx, _scope| {
+                        let prompt_input = me.ui.text_input(id!(prompt_input));
+
+                        prompt_input.set_text(cx, "");
+                        prompt_input.set_is_read_only(cx, false);
+
+                        me.state.image_paths.push(path);
+                        me.ui.redraw(cx);
+                    });
+                }
+                Some(Err(errors)) => {
+                    for e in errors {
+                        eprintln!("Error: {e}");
+                    }
+                }
+                None => {
+                    eprintln!("Error: No response from the client");
+                }
+            }
+        });
+    }
 }
 
 impl LiveRegister for App {
@@ -431,92 +519,10 @@ impl MatchEvent for App {
             }
         }
 
-        let prompt_input = self.ui.text_input(id!(prompt_input));
-        if let Some((text, _)) = prompt_input.returned(actions) {
-            prompt_input.set_text(cx, "Generating...");
-            prompt_input.set_is_read_only(cx, true);
-
-            let url = std::env::var("API_URL").unwrap_or_default();
-            let key = std::env::var("API_KEY").unwrap_or_default();
-            let model_id = std::env::var("IMAGE_MODEL_ID").unwrap_or_default();
-
-            let bot_id = BotId::new(&model_id, &url);
-
-            let mut client = OpenAIImageClient::new(url);
-            client.set_key(&key).unwrap();
-
-            let message = Message {
-                from: EntityId::User,
-                content: MessageContent {
-                    text: text,
-                    ..Default::default()
-                },
-                ..Default::default()
-            };
-
-            let ui = self.ui_runner();
-            spawn(async move {
-                let response = client
-                    .send(&bot_id, &[message], &[])
-                    .next()
-                    .await
-                    .map(|res| res.into_result());
-
-                match response {
-                    Some(Ok(message_content)) => {
-                        let attachment = message_content.attachments.first();
-                        let Some(attachment) = attachment else {
-                            eprintln!("Error: No attachment in the response");
-                            return;
-                        };
-
-                        let bytes = attachment.read().await;
-                        let bytes = match bytes {
-                            Ok(bytes) => bytes,
-                            Err(e) => {
-                                eprintln!("Error reading attachment: {e}");
-                                return;
-                            }
-                        };
-
-                        let now = std::time::SystemTime::now()
-                            .duration_since(std::time::UNIX_EPOCH)
-                            .unwrap()
-                            .as_secs();
-
-                        let filename = format!("generated_image_{now}.png");
-                        let path = Path::new(IMAGES_PATH).join(&filename);
-
-                        println!("Saving generated image to {path:?}");
-
-                        if let Err(e) = std::fs::write(&path, &bytes) {
-                            eprintln!(
-                                "Error saving generated image to {path:?}: {e}"
-                            );
-                            return;
-                        }
-
-                        ui.defer(move |me, cx, _scope| {
-                            let prompt_input =
-                                me.ui.text_input(id!(prompt_input));
-
-                            prompt_input.set_text(cx, "");
-                            prompt_input.set_is_read_only(cx, false);
-
-                            me.state.image_paths.push(path);
-                            me.ui.redraw(cx);
-                        });
-                    }
-                    Some(Err(errors)) => {
-                        for e in errors {
-                            eprintln!("Error: {e}");
-                        }
-                    }
-                    None => {
-                        eprintln!("Error: No response from the client");
-                    }
-                }
-            });
+        if let Some((text, _)) =
+            self.ui.text_input(id!(prompt_input)).returned(actions)
+        {
+            self.handle_image_generation(cx, text);
         }
     }
 }
