@@ -122,10 +122,4 @@ struct State {
     current_image_idx: usize,
 }
 
-impl State {
-    fn num_images(&self) -> usize {
-        self.image_paths.len()
-    }
-}
-
 app_main!(App);
