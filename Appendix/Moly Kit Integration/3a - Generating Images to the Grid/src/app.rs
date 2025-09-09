@@ -519,9 +519,8 @@ impl MatchEvent for App {
             }
         }
 
-        if let Some((text, _)) =
-            self.ui.text_input(id!(prompt_input)).returned(actions)
-        {
+        let prompt_input = self.ui.text_input(id!(prompt_input));
+        if let Some((text, _)) = prompt_input.returned(actions) {
             self.handle_image_generation(cx, text);
         }
     }
