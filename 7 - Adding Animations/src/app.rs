@@ -123,6 +123,7 @@ live_design! {
         icon_walk: {
             width: 10
         },
+        text: "",
         grab_key_focus: false,
     }
 
@@ -245,12 +246,11 @@ impl AppMain for App {
 
 impl MatchEvent for App {
     fn handle_actions(&mut self, cx: &mut Cx, actions: &Actions) {
-        let page_flip = self.ui.page_flip(id!(page_flip));
-
         if self.ui.button(id!(button)).clicked(&actions) {
-            page_flip.set_active_page(cx, live_id!(slideshow));
+            self.ui
+                .page_flip(id!(page_flip))
+                .set_active_page(cx, live_id!(slideshow));
         }
-        
         if self.ui.button(id!(left_button)).clicked(&actions) {
             self.go_to_previous_image(cx);
         }
@@ -260,7 +260,12 @@ impl MatchEvent for App {
 
         if let Some(event) = self.ui.view(id!(overlay)).key_down(&actions) {
             match event.key_code {
-                KeyCode::Escape => page_flip.set_active_page(cx, live_id!(image_browser)),
+                KeyCode::Escape => {
+                    self
+                        .ui
+                        .page_flip(id!(page_flip))
+                        .set_active_page(cx, live_id!(image_browser));
+                },
                 KeyCode::ArrowLeft => self.go_to_previous_image(cx),
                 KeyCode::ArrowRight => self.go_to_next_image(cx),
                 _ => {}

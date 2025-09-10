@@ -31,6 +31,7 @@ live_design! {
         icon_walk: {
             width: 10
         },
+        text: "",
         grab_key_focus: false,
     }
 

@@ -85,6 +85,7 @@ live_design! {
         icon_walk: {
             width: 10
         },
+        text: "",
         grab_key_focus: false,
     }
 
@@ -221,10 +222,12 @@ impl MatchEvent for App {
 
         if let Some(event) = self.ui.view(id!(overlay)).key_down(&actions) {
             match event.key_code {
-                KeyCode::Escape => self
-                    .ui
-                    .page_flip(id!(page_flip))
-                    .set_active_page(cx, live_id!(image_browser)),
+                KeyCode::Escape => {
+                    self
+                        .ui
+                        .page_flip(id!(page_flip))
+                        .set_active_page(cx, live_id!(image_browser));
+                },
                 KeyCode::ArrowLeft => self.go_to_previous_image(cx),
                 KeyCode::ArrowRight => self.go_to_next_image(cx),
                 _ => {}

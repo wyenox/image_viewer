@@ -17,6 +17,7 @@ live_design! {
         icon_walk: {
             width: 10
         },
+        text: "",
     }
 
     SlideshowOverlay = <View> {
